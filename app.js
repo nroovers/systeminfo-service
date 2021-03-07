@@ -20,7 +20,8 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 
 app.use(transformJson)
 
-app.use('/api/info', infoRouter)
+const API_PREF = process.env.API_PREF || '/api'
+app.use(API_PREF + '/info', infoRouter)
 
 app.get('/', function (req, res) {
     res.send('<h2>OK</h2>' +
