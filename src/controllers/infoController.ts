@@ -1,6 +1,10 @@
 // const infoRouter = require('express').Router()
+import AppError from "@utils/AppError";
 import { Request, Response, NextFunction } from "express";
 import info from "models/infoModel";
+import NodeCache from "node-cache";
+
+const infoCache = new NodeCache();
 
 const getFlags = (flag) => {
   // console.log('flags', flag)
@@ -23,12 +27,15 @@ export const getInfo = async (
     const flags = getFlags(req.query.flag);
     var data = {};
     for (const f of flags) {
-      if (typeof info[f] !== "function") throw new Error("Invalid flag: " + f);
-      data[f] = await info[f]();
+      if (typeof info[f] !== "function")
+        throw new AppError("Invalid flag: " + f);
+
+      if (!infoCache.has(f)) infoCache.set(f, await info[f](), 60);
+
+      data[f] = infoCache.get(f);
     }
     res.json(data);
   } catch (error) {
-    error.statusCode = 400;
     return next(error);
   }
 };
