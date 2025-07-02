@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import morgan from "morgan";
 import config from "config";
 import infoRouter from "routes/infoRoutes";
 import transformResponseBody from "middleware/transformResponseBody";
 import unknownEndpoint from "middleware/unknownEndpoint";
 import errorHandler from "middleware/errorHandler";
+import logger from "middleware/logger";
 
 const app = express();
 
@@ -15,11 +15,7 @@ const app = express();
 const path = `/${config.apiPref}/${config.apiVersion}`;
 
 app.use(cors()); // --> middleware to support CORS
-app.use(
-  morgan(
-    ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'
-  )
-);
+app.use(logger);
 app.use(transformResponseBody);
 
 app.use(path + "/info", infoRouter);

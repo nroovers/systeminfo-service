@@ -30,11 +30,11 @@ export const getInfo = async (
       if (typeof info[f] !== "function")
         throw new AppError("Invalid flag: " + f);
 
-      if (!infoCache.has(f)) infoCache.set(f, await info[f](), 60);
+      if (!infoCache.has(f)) infoCache.set(f, await info[f](), 60); // TODO: adjust caching TTL based on info type
 
       data[f] = infoCache.get(f);
     }
-    res.json(data);
+    res.status(200).json(data);
   } catch (error) {
     return next(error);
   }
