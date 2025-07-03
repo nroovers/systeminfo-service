@@ -17,6 +17,10 @@ esbuild
       "express-mung",
       "systeminformation",
       "dotenv",
+      "node-cache",
+      "nodemon",
+      "ts-node",
+      "tsconfig-paths",
     ],
   })
   .catch(() => process.exit(1));
