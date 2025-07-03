@@ -5,6 +5,21 @@ import NodeCache from "node-cache";
 
 const infoCache = new NodeCache();
 
+const infoTtl: Record<InfoKey, number> = {
+  cpu: 60,
+  cpuSpeed: 10,
+  cpuTemp: 10,
+  cpuLoad: 10,
+  mem: 60,
+  os: 60,
+  processes: 60,
+  disk: 60,
+  fsSize: 60,
+  network: 60,
+  networkStats: 60,
+  wifi: 60,
+};
+
 const getFlags = (flag: any): InfoKey[] => {
   if (Array.isArray(flag)) {
     return flag;
@@ -26,7 +41,7 @@ export const getInfo = async (
     for (const f of flags) {
       if (!(f in infoFunc)) throw new AppError("Invalid flag: " + f, 400);
 
-      if (!infoCache.has(f)) infoCache.set(f, await infoFunc[f](), 60); // TODO: adjust caching TTL based on info type
+      if (!infoCache.has(f)) infoCache.set(f, await infoFunc[f](), infoTtl[f]); // TODO: adjust caching TTL based on info type
 
       data[f] = infoCache.get(f);
     }
