@@ -21,7 +21,10 @@
     "systeminformation": "^5.27.7"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/express-mung": "^0.5.5",
+    "@types/morgan": "^1.9.10",
     "dotenv": "^17.0.1",
     "esbuild": "^0.25.5",
     "nodemon": "^3.1.10",

@@ -42,22 +42,11 @@ esbuild
     bundle: true,
     platform: "node",
     outfile: "dist/index.js",
-    sourcemap: true,
+    sourcemap: false,
     target: ["node22"],
     tsconfig: "tsconfig.json",
-    minify: true,
-    external: [
-      "express",
-      "cors",
-      "morgan",
-      "express-mung",
-      "systeminformation",
-      "dotenv",
-      "node-cache",
-      "nodemon",
-      "ts-node",
-      "tsconfig-paths",
-    ],
+    minify: false,
+    packages: "external"
   })
   .then(() => {
     // Copy static assets

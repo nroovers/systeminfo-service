@@ -37,10 +37,6 @@ const os = () => {
   return si.osInfo();
 };
 
-const load = () => {
-  return si.currentLoad();
-};
-
 const processes = () => {
   return si.processes();
 };
@@ -65,14 +61,13 @@ const wifi = () => {
   return si.wifiNetworks();
 };
 
-export default {
+export const infoFunc = {
   cpu,
   cpuSpeed,
   cpuTemp,
   cpuLoad,
   mem,
   os,
-  load,
   processes,
   disk,
   fsSize,
@@ -81,50 +76,19 @@ export default {
   wifi,
 };
 
-// const info2 = {
-//     cpu: {
-//         speed: 70,
-//         temp: 60,
-//         avgLoad: 0.15,
-//         currentLoad: 0.15,
-//     },
-//     memory: {
-//         total: 100,
-//         free: 70,
-//         used: 30
-//     },
-//     // battery:{
+export type Info = {
+  cpu?: si.Systeminformation.CpuData;
+  cpuSpeed?: si.Systeminformation.CpuCurrentSpeedData;
+  cpuTemp?: si.Systeminformation.CpuTemperatureData;
+  cpuLoad?: si.Systeminformation.CurrentLoadData;
+  mem?: si.Systeminformation.MemData;
+  os?: si.Systeminformation.OsData;
+  processes?: si.Systeminformation.ProcessesData;
+  disk?: si.Systeminformation.DiskLayoutData[];
+  fsSize?: si.Systeminformation.FsSizeData;
+  network?: si.Systeminformation.NetworkInterfacesData[];
+  networkStats?: si.Systeminformation.NetworkStatsData[];
+  wifi?: si.Systeminformation.WifiNetworkData[];
+};
 
-//     // },
-//     network: [
-//         {
-//             interface: 'eth0',
-//             ip4: '',
-//             ip4subnet: '',
-//             dhcp: '',
-//             mac: '',
-//         },
-//         {
-//             interface: 'wlan0',
-//             ip4: '',
-//             ip4subnet: '',
-//             dhcp: '',
-//             mac: '',
-//         }],
-//     processes: [
-//         {
-//             id: 'ábc',
-//             name: 'proc1',
-//             cpu: 0.10,
-//             memory: 150,
-//             status: 'idle'
-//         },
-//         {
-//             id: 'xyz',
-//             name: 'proc2',
-//             cpu: 0.20,
-//             memory: 723,
-//             status: 'running'
-//         }
-//     ]
-// }
+export type InfoKey = keyof typeof infoFunc;
