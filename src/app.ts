@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cors from "cors";
 import config from "config";
 import infoRouter from "routes/infoRoutes";
@@ -12,16 +13,16 @@ const app = express();
 // parses incoming requests with JSON payloads and is based on body-parser.
 // app.use(express.json())
 
-const path = `/${config.apiPref}/${config.apiVersion}`;
+const apiUrl = `/${config.apiPref}/${config.apiVersion}`;
 
-app.use(cors()); // --> middleware to support CORS
+app.use(cors());
 app.use(logger);
 app.use(transformResponseBody);
 
-app.use(path + "/info", infoRouter);
+app.use(apiUrl + "/info", infoRouter);
 
-app.get("/", function (req, res) {
-  res.send("<h2>OK</h2><p>System info service up and running.<p>");
+app.get("/", function (_, res) {
+  res.sendFile(path.join(__dirname, "assets/html", "index.html"));
 });
 
 app.use(unknownEndpoint);
