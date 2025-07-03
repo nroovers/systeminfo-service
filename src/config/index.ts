@@ -1,6 +1,9 @@
-import dotenv from "dotenv";
-
-dotenv.config();
+// Load dotenv only in non-production environments
+if (process.env.NODE_ENV !== "production") {
+  // Dynamically import dotenv to avoid bundling it in production builds
+  const dotenv = require("dotenv");
+  dotenv.config();
+}
 
 interface Config {
   port: number;
