@@ -1,11 +1,12 @@
 import AppError from "@utils/AppError";
 import { Request, Response, NextFunction } from "express";
-import { infoFunc, Info, InfoKey } from "models/infoModel";
+import { Info, InfoType } from "models/infoModel";
 import NodeCache from "node-cache";
+import { getInfoTypes } from "services/infoService";
 
 const infoCache = new NodeCache();
 
-const infoTtl: Record<InfoKey, number> = {
+const infoTtl: Record<InfoType, number> = {
   cpu: 60,
   cpuSpeed: 10,
   cpuTemp: 10,
@@ -20,14 +21,14 @@ const infoTtl: Record<InfoKey, number> = {
   wifi: 60,
 };
 
-const getFlags = (flag: any): InfoKey[] => {
+const getFlags = (flag: any): InfoType[] => {
   if (Array.isArray(flag)) {
     return flag;
   }
   if (flag) {
     return [flag];
   }
-  return Object.keys(infoFunc).map((k) => k as InfoKey);
+  return Object.keys(getInfoTypes) as InfoType[];
 };
 
 export const getInfo = async (
@@ -39,9 +40,10 @@ export const getInfo = async (
     const flags = getFlags(req.query.flag);
     var data: Info = {};
     for (const f of flags) {
-      if (!(f in infoFunc)) throw new AppError("Invalid flag: " + f, 400);
+      if (!(f in getInfoTypes)) throw new AppError("Invalid flag: " + f, 400);
 
-      if (!infoCache.has(f)) infoCache.set(f, await infoFunc[f](), infoTtl[f]); // TODO: adjust caching TTL based on info type
+      if (!infoCache.has(f))
+        infoCache.set(f, await getInfoTypes[f](), infoTtl[f]); // TODO: adjust caching TTL based on info type
 
       data[f] = infoCache.get(f);
     }
