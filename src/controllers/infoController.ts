@@ -8,9 +8,9 @@ const infoCache = new NodeCache();
 
 const infoTtl: Record<InfoType, number> = {
   cpu: 60,
-  cpuSpeed: 10,
-  cpuTemp: 10,
-  cpuLoad: 10,
+  cpuSpeed: 5,
+  cpuTemp: 5,
+  cpuLoad: 5,
   mem: 60,
   os: 60,
   processes: 60,
